@@ -1,4 +1,4 @@
-package bindings;
+package eu.smesec.platform.flatifier.bindings;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Base64;
