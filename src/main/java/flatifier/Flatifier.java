@@ -12,13 +12,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.stream.Stream;
 
 /**
  * This class takes over the manual labour of copy pasting the base64 encoded content of coach resources
@@ -40,12 +40,12 @@ public class Flatifier {
         Path dirPath = Paths.get(args[0]).toAbsolutePath();
         Path output = Paths.get(args[1]);
         // Make sure parent folder exists
-        if(Files.notExists(output.getParent())) {
+        if (Files.notExists(output.getParent())) {
             System.err.println(String.format("Output directory doesn't exist", output.toString()));
             throw new IllegalArgumentException("Invalid output directory");
         }
         // Make sure destination is file
-        if(Files.isDirectory(output)) {
+        if (Files.isDirectory(output)) {
             System.err.println(String.format("Output destination must be a file", output.toString()));
             throw new IllegalArgumentException("Invalid output destination");
         }
@@ -60,10 +60,14 @@ public class Flatifier {
         }
 
         // Find xml file in given folder
-        Stream<File> fileStream = Arrays.stream(files);
         //TODO: Deal with subquestionnaires
-        File xmlFile = fileStream.filter(file -> file.getName().endsWith(".xml")).findFirst().orElseThrow(FileNotFoundException::new);
+        File xmlFile = Arrays.stream(files)
+                .filter(file -> file.getName().endsWith(".xml"))
+                .findFirst()
+                .orElseThrow(FileNotFoundException::new);
+
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        // TODO: Security -> Disable access to external entities in XML parsing if possible
         dbFactory.setNamespaceAware(true);
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(xmlFile.getAbsolutePath());
@@ -74,12 +78,11 @@ public class Flatifier {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node n = nodeList.item(i);
             String contentFileName = n.getAttributes().getNamedItem("filename").getNodeValue();
+            final String attributeId = n.getParentNode().getAttributes().getNamedItem("id").getTextContent();
             // throws FileNotFound if referenced file is not within the folder passed via args[0]
             File content = new File(Paths.get(dirPath.toString(), contentFileName).toString());
-            byte[] unencodedContent = Files.readAllBytes(content.toPath());
-            String b64encoded = new String(Base64.getEncoder().encode(unencodedContent), StandardCharsets.UTF_8);
-            // TODO: Why is output [content: null] ?
-            System.out.println("## including " + b64encoded.length() + " bytes (B64 encoded) from file " + content.toPath() + " into attribute node " + n.toString());
+            String b64encoded = encodeFileToBase64(content);
+            System.out.println("## Including " + b64encoded.length() + " bytes (encoded) for attribute '" + attributeId + "' from file " + content.toPath() + " ");
             n.setTextContent(b64encoded);
         }
 
@@ -87,27 +90,30 @@ public class Flatifier {
         nodeList = doc.getElementsByTagName("library");
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node n = nodeList.item(i);
-            String[] libraryFQDN = n.getAttributes().getNamedItem("id").getNodeValue().split("\\.");
+            final String libraryId = n.getAttributes().getNamedItem("id").getNodeValue();
+            String[] libraryFQDN = libraryId.split("\\.");
             String libraryName = libraryFQDN[libraryFQDN.length - 1] + ".jar";
             // throws FileNotFound if referenced file is not within the folder passed via args[0]
             File content = new File(Paths.get(dirPath.toString(), libraryName).toString());
-            byte[] unencodedContent = Files.readAllBytes(content.toPath());
-            String b64encoded = new String(Base64.getEncoder().encode(unencodedContent), StandardCharsets.UTF_8);
-            // TODO: Why is output [content: null] ?
-            System.out.println("## including " + b64encoded.length() + " bytes (B64 encoded) from file " + content.toPath() + " into library node " + n.toString());
+            String b64encoded = encodeFileToBase64(content);
+            System.out.println("## Including " + b64encoded.length() + " bytes (encoded) for library '" + libraryId + "' from file " + content.toPath() + " ");
             n.setTextContent(b64encoded);
         }
 
         // preparation
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        // TODO: Security -> Disable access to external entities in XML parsing if possible
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
-        StreamResult result = new StreamResult(output.toFile());
         // create the flatified xml
+        StreamResult result = new StreamResult(output.toFile());
         transformer.transform(source, result);
-        System.out.println(String.format("# Wrote all files to output file %s", output.toString()));
+        System.out.println(String.format("# All files written to output file '%s'", output.toString()));
+    }
 
+    private static String encodeFileToBase64(final File content) throws IOException {
+        byte[] unencodedContent = Files.readAllBytes(content.toPath());
+        return new String(Base64.getEncoder().encode(unencodedContent), StandardCharsets.UTF_8);
     }
 }

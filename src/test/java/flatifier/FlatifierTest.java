@@ -1,27 +1,26 @@
 package flatifier;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class FlatifierTest {
 
-    private Flatifier flatifier;
-
-    @Before
-    public void setUp() {
-        this.flatifier = new Flatifier();
-    }
+    public static final String ARG_DIR_VALID = Paths.get("src", "test", "resources", "fhnw").toString();
+    public static final String ARG_OUT_VALID = Paths.get("target", "test-output", "fhnw-flat.xml").toString();
+    public static final String ARG_OUT_NOEXISTS = Paths.get("target", "test-output", "noexists", "fhnw-flat.xml").toString();
 
     @Test
-    public void noArgsTest() {
+    public void testNoArgs() {
         try {
-            flatifier.main(null);
+            Flatifier.main(null);
             fail("Didn't throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage() == "Missing arguments");
+            assertEquals("Missing arguments", e.getMessage());
         } catch (Exception e) {
             fail("Threw another type of exception: " + e.getMessage());
         }
@@ -29,12 +28,11 @@ public class FlatifierTest {
 
     @Test
     public void testOutputNotFile() {
-        String[] args = {"src\\main\\resources\\fhnw", "src\\main\\resources\\fhnw"};
         try {
-            flatifier.main(args);
+            Flatifier.main(new String[]{ARG_DIR_VALID, ARG_DIR_VALID});
             fail("Didn't throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage() == "Invalid output destination");
+            assertEquals("Invalid output destination", e.getMessage());
         } catch (Exception e) {
             fail("Threw another type of exception: " + e.getMessage());
         }
@@ -42,12 +40,11 @@ public class FlatifierTest {
 
     @Test
     public void testOutputDoesntExist() {
-        String[] args = {"src\\main\\resources\\fhnw", "src\\main\\resources\\doesntexist\\fhnw_flat.xml"};
         try {
-            flatifier.main(args);
+            Flatifier.main(new String[]{ARG_DIR_VALID, ARG_OUT_NOEXISTS});
             fail("Didn't throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage() == "Invalid output directory");
+            assertEquals("Invalid output directory", e.getMessage());
         } catch (Exception e) {
             fail("Threw another type of exception: " + e.getMessage());
         }
@@ -56,8 +53,8 @@ public class FlatifierTest {
     @Test
     public void testFlatification() {
         try {
-            String[] args = {"src\\main\\resources\\fhnw", "src\\main\\resources\\fhnw\\fhnw_flat.xml"};
-            flatifier.main(args);
+            Files.createDirectories(Paths.get(ARG_OUT_VALID).getParent());
+            Flatifier.main(new String[]{ARG_DIR_VALID, ARG_OUT_VALID});
         } catch (Exception e) {
             e.printStackTrace();
             fail("Threw an exception: " + e.getMessage());

@@ -514,34 +514,6 @@
                 </listeners>
             </block>
         </blocks>
-
         <library id="eu.smesec.library.FirstLibrary"></library>
     </questionnaire>
-
-    <user username="admin" firstname="" surname=""
-          password="$6$saltsalt$qFmFH.bQmmtXzyBY0s9v7Oicd2z4XSIecDzlB5KiA2/jctKu9YterLp8wwnSq.qc.eoxqOmSuNp2xS0ktL3nh/"
-          email="test@fhnw.ch" id="user1">
-        <role>Admin</role>
-    </user>
-    <user username="mark" firstname="Mark" surname="Zeman"
-          password="$6$saltsalt$qFmFH.bQmmtXzyBY0s9v7Oicd2z4XSIecDzlB5KiA2/jctKu9YterLp8wwnSq.qc.eoxqOmSuNp2xS0ktL3nh/"
-          email="mark.zeman@fhnw.ch" id="mark.zeman">
-        <role>Admin</role>
-        <role>Mark</role>
-    </user>
-    <user username="nic" firstname="Nicolas" surname="Odermatt"
-          password="$6$saltsalt$qFmFH.bQmmtXzyBY0s9v7Oicd2z4XSIecDzlB5KiA2/jctKu9YterLp8wwnSq.qc.eoxqOmSuNp2xS0ktL3nh/"
-          email="nicolas.odermatt@students.fhnw.ch" id="nicolas.odermatt">
-        <role>Admin</role>
-    </user>
-    <user username="martin" firstname="Martin" surname="Gwerder"
-          password="$6$b58c7a7de1c47f21$N.4PB6.XBnxh47rbcRIRDI58wGK5Jxj9ysy4VlgNckd2cb1bPXqRZZKmgtgHnCuVnmqClpzL/4S/J6OJU3XEZ0"
-          email="martin.gwerder@fhnw.ch" id="martin.gwerder">
-        <role>Admin</role>
-    </user>
-    <user username="samuel" firstname="Samuel" surname="Fricker"
-          password="$6$2662d29c6130cb99$Vg/x9YvafNDdI0MZyLrNipp1YnbMLM1HqilEmP7SjH89SlEyS.DzhK0q3pat0HVq92.1QzWUNLKatuNduFdWE1"
-          email="samuel.fricker@fhnw.ch" id="samuel.fricker">
-        <role>Admin</role>
-    </user>
 </company>
