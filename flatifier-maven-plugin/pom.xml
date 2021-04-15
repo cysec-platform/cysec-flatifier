@@ -8,7 +8,7 @@
     <artifactId>flatifier-maven-plugin</artifactId>
     <version>0.3.0</version>
 
-    <name>Flatifier</name>
+    <name>Flatifier maven plugin</name>
     <description>Flatifier plugin to generate single file coaches during the build process.</description>
     <url>http://cysec.cyberlab.fhnw.ch/</url>
 
