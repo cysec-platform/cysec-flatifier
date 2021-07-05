@@ -11,7 +11,7 @@ pipeline {
 	stages {
         stage('Clone sources') {
             steps {
-                git url: 'git@github.com:cyber-geiger/toolbox-ui.git',credentialsId: 'GEIGER_UI_deploy_key', branch: env.BRANCH_NAME
+                git url: 'https://github.com/cysec-platform/cysec-flatifier.git',credentialsId: 'cysec-jenkins-public', branch: env.BRANCH_NAME
             }
         }
 
