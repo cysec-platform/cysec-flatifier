@@ -6,7 +6,7 @@
 
   <groupId>eu.smesec.platform</groupId>
   <artifactId>flatifier-maven-plugin</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2-SNAPSHOT</version>
 
   <name>Flatifier maven plugin</name>
   <description>Flatifier plugin to generate single file coaches during the build process.
