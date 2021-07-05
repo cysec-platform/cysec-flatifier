@@ -49,7 +49,7 @@ pipeline {
           //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/tests/test/', reportFiles: 'index.html', reportName: 'GEIGER UI Report', reportTitles: 'GEIGER-UI'])
         //}
         success {
-            archiveArtifacts artifacts: 'target/ToolboxUI.jar, target/install/**/*', fingerprint: true
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
 			// step([$class: 'JavadocArchiver', javadocDir: 'build/docs/javadoc', keepAll: false])
             updateGitlabCommitStatus(name: 'build', state: 'success')
         }
