@@ -6,7 +6,7 @@
 
   <groupId>eu.smesec.platform</groupId>
   <artifactId>flatifier-maven-plugin</artifactId>
-  <version>0.3.2-SNAPSHOT</version>
+  <version>0.4.0-SNAPSHOT</version>
 
   <name>CYSEC Flatifier Maven Plugin</name>
   <description>Plugin to generate single file coaches and to help develop multilingual coaches.</description>
@@ -68,6 +68,11 @@
       <groupId>eu.smesec.platform</groupId>
       <artifactId>flatifier</artifactId>
       <version>0.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.32</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
