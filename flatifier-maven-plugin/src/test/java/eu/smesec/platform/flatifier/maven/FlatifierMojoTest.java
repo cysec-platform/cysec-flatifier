@@ -23,9 +23,23 @@ public class FlatifierMojoTest {
 
     @Test
     public void testFlatify() throws Exception {
-        Files.createDirectories(Paths.get("target", "mojo-test-output"));
+        Files.createDirectories(Paths.get("target", "test-output-flatifier-mojo"));
 
-        final String pom = "src/test/resources/testproject/pom.xml";
+        final String pom = "src/test/resources/flatifier-testproject/pom.xml";
+        final File pomFile= new File(pom);
+        assertNotNull(pomFile);
+        assertTrue(pomFile.exists());
+
+        final FlatifierMojo flatifierMojo = (FlatifierMojo) rule.lookupMojo("flatify", pom);
+        assertNotNull(flatifierMojo);
+        flatifierMojo.execute();
+    }
+
+    @Test
+    public void testFlatifyMultilingual() throws Exception {
+        Files.createDirectories(Paths.get("target", "test-output-flatifier-mojo-multi"));
+
+        final String pom = "src/test/resources/flatifier-multilingual-testproject/pom.xml";
         final File pomFile= new File(pom);
         assertNotNull(pomFile);
         assertTrue(pomFile.exists());

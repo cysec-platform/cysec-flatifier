@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>test</groupId>
-    <artifactId>flatify-test-custom-paths</artifactId>
+    <artifactId>flatify-test-custom-paths-multi</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -16,10 +16,10 @@
             <plugin>
                 <groupId>eu.smesec.platform</groupId>
                 <artifactId>flatifier-maven-plugin</artifactId>
-                <version>0.3.0</version>
                 <configuration>
-                    <inputDirectory>src/test/resources/testproject/fhnw</inputDirectory>
-                    <outputFile>target/mojo-test-output/fhnw-flat.xml</outputFile>
+                    <inputDirectory>src/test/resources/flatifier-multilingual-testproject/fhnw</inputDirectory>
+                    <outputFile>target/test-output-flatifier-mojo-multi/fhnw-flat.xml</outputFile>
+                    <languageConfigFile>src/test/resources/flatifier-multilingual-testproject/fhnw/config.xml</languageConfigFile>
                 </configuration>
             </plugin>
         </plugins>
