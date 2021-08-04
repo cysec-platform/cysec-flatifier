@@ -5,12 +5,13 @@
 
     <groupId>eu.smesec.platform</groupId>
     <artifactId>flatifier-aggregator</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <modules>
         <module>flatifier</module>
+        <module>flatifier-translation-tool</module>
         <module>flatifier-maven-plugin</module>
     </modules>
 
