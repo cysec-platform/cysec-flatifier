@@ -1,5 +1,7 @@
 package eu.smesec.platform.flatifier;
 
+import eu.smesec.library.flatifier.Flatifier;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

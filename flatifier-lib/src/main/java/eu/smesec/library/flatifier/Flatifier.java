@@ -1,5 +1,7 @@
-package eu.smesec.platform.flatifier;
+package eu.smesec.library.flatifier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -26,6 +28,8 @@ import java.util.stream.Stream;
  * Integrates coach resources (e.g. libraries and media files) as base64-encoded content and generates a flattened XML file.
  */
 public class Flatifier {
+
+    private static final Logger log = LoggerFactory.getLogger(Flatifier.class);
 
     /**
      * Path to the folder containing the coach and its resources
@@ -66,9 +70,9 @@ public class Flatifier {
             throw new IllegalArgumentException("Directory for output file does not exist");
         }
 
-        System.out.println("Flatifiying directory " + inputDirectory);
+        log.info("Flatifiying directory {}", inputDirectory);
         if (alternativeInputDirectory != null) {
-            System.out.println("Alternate directory is " + alternativeInputDirectory);
+            log.info("Alternate directory is {}", alternativeInputDirectory);
         }
 
         final Stream<Path> pathStream = Files.list(inputDirectory);
@@ -94,7 +98,7 @@ public class Flatifier {
             final String attributeId = n.getParentNode().getAttributes().getNamedItem("id").getTextContent();
             Path content = getFile(contentFileName);
             String b64encoded = encodeFileToBase64(content);
-            System.out.println("## Including " + b64encoded.length() + " bytes (encoded) for attribute '" + attributeId + "' from file " + content + " ");
+            log.info("## Including {} bytes (encoded) for attribute '{}' from file {} ", b64encoded.length(), attributeId, content);
             n.setTextContent(b64encoded);
         }
 
@@ -107,7 +111,7 @@ public class Flatifier {
             String libraryName = libraryFQDN[libraryFQDN.length - 1] + ".jar";
             Path content = getFile(libraryName);
             String b64encoded = encodeFileToBase64(content);
-            System.out.println("## Including " + b64encoded.length() + " bytes (encoded) for library '" + libraryId + "' from file " + content + " ");
+            log.info("## Including {} bytes (encoded) for library '{}' from file {} ", b64encoded.length(), libraryId, content);
             n.setTextContent(b64encoded);
         }
 
@@ -120,13 +124,13 @@ public class Flatifier {
         // create the flatified XML
         StreamResult result = new StreamResult(outputFile.toFile());
         transformer.transform(source, result);
-        System.out.println("# All files written to output file '" + outputFile + "'");
+        log.info("# All files written to output file '{}'", outputFile);
     }
 
     private Path getFile(String fileName) throws NoSuchFileException {
         Path path = Paths.get(inputDirectory.toString(), fileName);
         if (Files.notExists(path) && (alternativeInputDirectory != null)) {
-            System.out.println("## Using alternative directory for '" + fileName + "'");
+            log.info("## Using alternative directory for '{}'", fileName);
             path = Paths.get(alternativeInputDirectory.toString(), fileName);
         }
         if (Files.notExists(path)) {
