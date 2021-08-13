@@ -39,7 +39,7 @@ pipeline {
         }
         stage('publish') {
             steps {
-                sh 'mvn -pl flatifier-maven-plugin deploy'
+                sh 'mvn deploy'
             }
         }
 

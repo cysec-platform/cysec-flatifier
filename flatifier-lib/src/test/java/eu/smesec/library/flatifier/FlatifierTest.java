@@ -1,4 +1,4 @@
-package eu.smesec.platform.flatifier;
+package eu.smesec.library.flatifier;
 
 import org.junit.Before;
 import org.junit.Test;
