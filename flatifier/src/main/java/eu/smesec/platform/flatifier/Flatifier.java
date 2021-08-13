@@ -3,16 +3,20 @@ package eu.smesec.platform.flatifier;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -33,12 +37,24 @@ public class Flatifier {
      */
     private final Path outputFile;
 
+    /**
+     * Path to the folder containing files to use if not found in 'inputDirectory'
+     */
+    private final Path alternativeInputDirectory;
+
     public Flatifier(final Path inputDirectory, final Path outputFile) {
         this.inputDirectory = inputDirectory;
         this.outputFile = outputFile;
+        this.alternativeInputDirectory = null;
     }
 
-    public void flatify() throws Exception {
+    public Flatifier(final Path inputDirectory, final Path outputFile, final Path overrideInputDirectory) {
+        this.inputDirectory = inputDirectory;
+        this.outputFile = outputFile;
+        this.alternativeInputDirectory = overrideInputDirectory;
+    }
+
+    public void flatify() throws IOException, SAXException, ParserConfigurationException, TransformerException {
         if (outputFile == null) {
             throw new IllegalArgumentException("Invalid output file");
         }
@@ -51,6 +67,9 @@ public class Flatifier {
         }
 
         System.out.println("Flatifiying directory " + inputDirectory);
+        if (alternativeInputDirectory != null) {
+            System.out.println("Alternate directory is " + alternativeInputDirectory);
+        }
 
         final Stream<Path> pathStream = Files.list(inputDirectory);
         final Path xmlFile = pathStream
@@ -73,8 +92,7 @@ public class Flatifier {
             Node n = nodeList.item(i);
             String contentFileName = n.getAttributes().getNamedItem("filename").getNodeValue();
             final String attributeId = n.getParentNode().getAttributes().getNamedItem("id").getTextContent();
-            // throws FileNotFound if referenced file is not within the inputDirectory
-            Path content = Paths.get(inputDirectory.toString(), contentFileName);
+            Path content = getFile(contentFileName);
             String b64encoded = encodeFileToBase64(content);
             System.out.println("## Including " + b64encoded.length() + " bytes (encoded) for attribute '" + attributeId + "' from file " + content + " ");
             n.setTextContent(b64encoded);
@@ -87,8 +105,7 @@ public class Flatifier {
             final String libraryId = n.getAttributes().getNamedItem("id").getNodeValue();
             String[] libraryFQDN = libraryId.split("\\.");
             String libraryName = libraryFQDN[libraryFQDN.length - 1] + ".jar";
-            // throws FileNotFound if referenced file is not within the inputDirectory
-            Path content = Paths.get(inputDirectory.toString(), libraryName);
+            Path content = getFile(libraryName);
             String b64encoded = encodeFileToBase64(content);
             System.out.println("## Including " + b64encoded.length() + " bytes (encoded) for library '" + libraryId + "' from file " + content + " ");
             n.setTextContent(b64encoded);
@@ -103,7 +120,19 @@ public class Flatifier {
         // create the flatified XML
         StreamResult result = new StreamResult(outputFile.toFile());
         transformer.transform(source, result);
-        System.out.println("# All files written to output file '" + outputFile.toString() + "'");
+        System.out.println("# All files written to output file '" + outputFile + "'");
+    }
+
+    private Path getFile(String fileName) throws NoSuchFileException {
+        Path path = Paths.get(inputDirectory.toString(), fileName);
+        if (Files.notExists(path) && (alternativeInputDirectory != null)) {
+            System.out.println("## Using alternative directory for '" + fileName + "'");
+            path = Paths.get(alternativeInputDirectory.toString(), fileName);
+        }
+        if (Files.notExists(path)) {
+            throw new NoSuchFileException(fileName);
+        }
+        return path;
     }
 
     /**
