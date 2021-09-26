@@ -24,13 +24,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.smesec.cysec</groupId>
-    <artifactId>flatifier</artifactId>
+    <artifactId>lib-flatifier</artifactId>
     <version>0.4.0</version>
 
     <packaging>jar</packaging>
 
-    <name>Flatifier Executable JAR</name>
-    <description>Flatifier executable JAR to generate single-file coaches.</description>
+    <name>Flatifier Library</name>
+    <description>Flatifier library to generate single file coaches.</description>
     <url>https://cysec.cyberlab.fhnw.ch/</url>
     <organization>
         <name>FHNW (University of Applied Sciences and Arts Northwestern Switzerland)</name>
@@ -88,19 +88,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>eu.smesec.cysec</groupId>
-            <artifactId>lib-flatifier</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
+            <artifactId>slf4j-api</artifactId>
             <version>1.7.32</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.32</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -137,41 +138,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-                                    <resource>MANIFEST.MF</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>META-INF/MANIFEST.MF</resource>
-                                    <file>src/main/resources/META-INF/MANIFEST.MF</file>
-                                </transformer>
-                            </transformers>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <createDependencyReducedPom>true</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -221,7 +187,7 @@
                     <excludePackageNames>*.generated</excludePackageNames>
                 </configuration>
             </plugin>
-            <!-- signing -->
+            <!-- signing  -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -236,6 +202,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

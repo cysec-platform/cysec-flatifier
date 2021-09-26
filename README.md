@@ -4,10 +4,25 @@ This tool integrates coach resources (e.g. libraries and media files) as base64-
 
 ## Usage
 
-### Flatifier JAR
+### Flatifier Library
+Can be used as dependency to use the flatifying functionality programmatically.
 
+*Example for Maven:*
+```xml
+<dependency>
+    <groupId>eu.smesec.cysec</groupId>
+    <artifactId>lib-flatifier</artifactId>
+    <version>x.x.x</version>
+</dependency>
 ```
-java -jar flatifier.jar INPUTDIRECTORY OUTPUTFILE
+
+### Flatifier Executable JAR
+
+Allows to execute the flatifier independently and directly on the command line.
+The use of an alternate source directory (e.g. for multilingual builds) is not supported.
+
+```bash
+java -jar flatifier-x.x.x.jar INPUTDIRECTORY OUTPUTFILE
 ```
 
 | Argument          | Required  | Description  |
@@ -18,45 +33,10 @@ java -jar flatifier.jar INPUTDIRECTORY OUTPUTFILE
 The JAR returns a non-zero exit-code upon failure.
 
 *Example:*
-```
+```bash
 java -jar flatifier.jar /path/to/input/coach-xy /path/to/output/coach-xy-flat.xml
 ```
 
-### Flatifier Maven Plugin
 
-The plugin provides the `flatify` goal which binds to the `package` phase by default.
-
-| Parameter        | Required  | Description  | Default value  |
-|------------------|-----------|--------------|----------------|
-| `inputDirectory` | no        | Path to the folder containing the coach and its resources | `${project.build.directory}/flatify-input` |
-| `outputFile`     | no        | Destination of the flattened XML file | `${project.build.directory}/${project.artifactId}.xml` |
-
-It is suggested to use a dedicated input directory (see the default above) where all the resources are placed before running the plugin.
-This directory can be configured as an output directory for other build stages, e.g. `maven-assembly-plugin` when building a JAR file.
-Other resources can be copied there easily with `maven-resources-plugin:copy-resources`.
-
-**Usage in the POM:**
-```
-<build>
-    <plugins>
-        <!-- ... -->
-        <plugin>
-            <groupId>eu.smesec.platform</groupId>
-            <artifactId>flatifier-maven-plugin</artifactId>
-            <version>0.3.0</version>
-            <executions>
-                <execution>
-                    <id>flatify-coach</id>
-                    <goals>
-                        <goal>flatify</goal>
-                    </goals>
-                </execution>
-            </executions>
-            <configuration>
-                <inputDirectory>path/to/input/coach-xy/</inputDirectory>
-                <outputFile>path/to/output/coach-xy-flat.xml</outputFile>
-            </configuration>
-        </plugin>
-    </plugins>
-</build>
-```
+## License
+This project is licensed under the Apache 2.0 license, see [LICENSE](LICENSE).

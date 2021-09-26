@@ -1,0 +1,1 @@
+Main-Class: eu.smesec.cysec.flatifier.Launcher
