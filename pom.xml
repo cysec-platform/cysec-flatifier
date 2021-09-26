@@ -28,6 +28,12 @@
 
     <packaging>pom</packaging>
 
+    <scm>
+        <connection>scm:git:git://github.com/cysec-platform/cysec-flatifier.git</connection>
+        <developerConnection>scm:git:ssh://github.com/cysec-platform/cysec-flatifier</developerConnection>
+        <url>https://github.com/cysec-platform/cysec-flatifier</url>
+    </scm>
+
     <modules>
         <module>lib-flatifier</module>
         <module>flatifier</module>

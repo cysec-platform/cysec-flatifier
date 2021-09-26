@@ -11,7 +11,7 @@ Can be used as dependency to use the flatifying functionality programmatically.
 ```xml
 <dependency>
     <groupId>eu.smesec.cysec</groupId>
-    <artifactId>flatifier-lib</artifactId>
+    <artifactId>lib-flatifier</artifactId>
     <version>x.x.x</version>
 </dependency>
 ```
