@@ -10,7 +10,7 @@ Can be used as dependency to use the flatifying functionality programmatically.
 *Example for Maven:*
 ```xml
 <dependency>
-    <groupId>eu.smesec.library</groupId>
+    <groupId>eu.smesec.cysec</groupId>
     <artifactId>flatifier-lib</artifactId>
     <version>x.x.x</version>
 </dependency>
@@ -36,3 +36,7 @@ The JAR returns a non-zero exit-code upon failure.
 ```bash
 java -jar flatifier.jar /path/to/input/coach-xy /path/to/output/coach-xy-flat.xml
 ```
+
+
+## License
+This project is licensed under the Apache 2.0 license, see [LICENSE](LICENSE).
