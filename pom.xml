@@ -24,7 +24,7 @@
 
     <groupId>eu.smesec.cysec</groupId>
     <artifactId>flatifier-aggregator</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
