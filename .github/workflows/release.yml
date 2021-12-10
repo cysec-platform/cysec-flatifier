@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
-          distribution: 'adopt'
-          cache: maven
-      - name: Build and Release to OSSRH
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build and release to OSSRH
         run: mvn -B clean deploy -P release
