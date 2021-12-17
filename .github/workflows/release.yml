@@ -18,4 +18,4 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: Build and release to OSSRH
-        run: mvn -B clean deploy -gs /root/settings.xml
+        run: mvn -B clean deploy -P release -gs /root/settings.xml
