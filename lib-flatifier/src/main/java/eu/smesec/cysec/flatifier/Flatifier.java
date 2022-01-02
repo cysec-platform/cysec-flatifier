@@ -148,9 +148,11 @@ public class Flatifier {
 
     private Path getFile(String fileName) throws NoSuchFileException {
         Path path = Paths.get(inputDirectory.toString(), fileName);
+        log.debug("## Get file from path '{}'", path);
         if (Files.notExists(path) && (alternativeInputDirectory != null)) {
             log.info("## Using alternative directory for '{}'", fileName);
             path = Paths.get(alternativeInputDirectory.toString(), fileName);
+            log.debug("## Get file from alternative path '{}'", path);
         }
         if (Files.notExists(path)) {
             throw new NoSuchFileException(fileName);
