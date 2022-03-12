@@ -71,10 +71,10 @@ public class Flatifier {
         this.alternativeInputDirectory = null;
     }
 
-    public Flatifier(final Path inputDirectory, final Path outputFile, final Path overrideInputDirectory) {
+    public Flatifier(final Path inputDirectory, final Path outputFile, final Path alternativeInputDirectory) {
         this.inputDirectory = inputDirectory;
         this.outputFile = outputFile;
-        this.alternativeInputDirectory = overrideInputDirectory;
+        this.alternativeInputDirectory = alternativeInputDirectory;
     }
 
     public void flatify() throws IOException, SAXException, ParserConfigurationException, TransformerException {
