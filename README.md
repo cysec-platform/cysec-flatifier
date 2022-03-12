@@ -5,9 +5,9 @@ This tool integrates coach resources (e.g. libraries and media files) as base64-
 ## Usage
 
 ### Flatifier Library
-Can be used as dependency to use the flatifying functionality programmatically.
 
-*Example for Maven:*
+Use this library as a Maven dependency like this:
+
 ```xml
 <dependency>
     <groupId>eu.smesec.cysec</groupId>
@@ -15,6 +15,22 @@ Can be used as dependency to use the flatifying functionality programmatically.
     <version>x.x.x</version>
 </dependency>
 ```
+
+Here is an example on how to use the _flatify_ functionality programmatically:
+
+```java
+// define variables
+Path inputDirectory = Paths.get("path", "to", "input");
+Path outputFile = Paths.get("path", "to", "output", "coach-flat.xml");
+Path alternativeInputDirectory = Paths.get("path", "to", "alternative-input");
+
+// create flatifier
+Flatifier flatifier = new Flatifier(inputDirectory, outputFile, alternativeInputDirectory);
+
+// execute flatify process
+flatifier.flatify();
+```
+
 
 ### Flatifier Executable JAR
 
@@ -30,7 +46,7 @@ java -jar flatifier-x.x.x.jar INPUTDIRECTORY OUTPUTFILE
 | `INPUTDIRECTORY`  | yes       | Path to the folder containing the coach and its resources |
 | `OUTPUTFILE`      | yes       | Destination of the flattened XML file |
 
-The JAR returns a non-zero exit-code upon failure.
+The launcher returns a non-zero exit-code upon failure.
 
 *Example:*
 ```bash
