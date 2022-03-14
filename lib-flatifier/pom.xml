@@ -18,14 +18,12 @@
   limitations under the License.
   #L%
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.smesec.cysec</groupId>
     <artifactId>lib-flatifier</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.4.1</version>
 
     <packaging>jar</packaging>
 
@@ -84,7 +82,8 @@
         <connection>scm:git:git://github.com/cysec-platform/cysec-flatifier.git</connection>
         <developerConnection>scm:git:ssh://github.com/cysec-platform/cysec-flatifier</developerConnection>
         <url>https://github.com/cysec-platform/cysec-flatifier</url>
-    </scm>
+      <tag>v0.4.1</tag>
+  </scm>
 
     <dependencies>
         <dependency>
